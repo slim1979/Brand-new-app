@@ -69,10 +69,12 @@ get '/logout' do
   session.delete(:identity)
   erb "<div class='alert alert-message'>Logged out</div>"
 end
+
 #обработчик запроса get. браузер получает страницу с сервера
 get '/new' do
   erb :new
 end
+
 #обработчик запроса post. браузер отправляет страницу на сервера
 post '/new' do
 
@@ -82,5 +84,12 @@ post '/new' do
 		@error ='Это поле не может быть пустым'
 		return erb :new
 	end
+	
+	@db.execute 'insert into 
+				posts (Context, CreatedDate) 
+				values (?, datetime())', [@new_post]
+	
+	@number = @db.execute 'select id from posts order by posts.id desc limit 1'
+	erb 'Запись добавлена!'
   
 end
