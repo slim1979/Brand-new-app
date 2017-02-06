@@ -39,7 +39,10 @@ before '/secure/*' do
 end
 
 get '/' do
-  erb 'Can you handle a <a href="/secure/place">secret</a>?'
+
+  init_db
+  @outpost = @db.execute 'select * from posts'
+  erb :index
 end
 
 get '/login/form' do
