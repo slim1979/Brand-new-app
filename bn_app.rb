@@ -69,14 +69,18 @@ get '/logout' do
   session.delete(:identity)
   erb "<div class='alert alert-message'>Logged out</div>"
 end
-
+#обработчик запроса get. браузер получает страницу с сервера
 get '/new' do
   erb :new
 end
+#обработчик запроса post. браузер отправляет страницу на сервера
 post '/new' do
 
   @new_post = params[:new_post]
   
-  erb "Вы ввели #{@new_post}"
+	if @new_post ==""
+		@error ='Это поле не может быть пустым'
+		return erb :new
+	end
   
 end
