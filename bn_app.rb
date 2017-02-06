@@ -41,7 +41,7 @@ end
 get '/' do
 
   init_db
-  @outpost = @db.execute 'select * from posts'
+  @outpost = @db.execute 'select * from posts order by id desc'
   erb :index
 end
 
