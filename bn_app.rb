@@ -53,5 +53,5 @@ get '/logout' do
 end
 
 get '/new' do
-  erb "Hello World"
+  erb :new
 end
