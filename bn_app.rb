@@ -22,6 +22,14 @@ configure do
 					CreatedDate DATE,
 					Context     TEXT
 				)'
+	@db.execute 'CREATE TABLE IF NOT EXISTS
+				comments 
+				(
+					id          INTEGER PRIMARY KEY AUTOINCREMENT,
+					CreatedDate DATE,
+					Context     TEXT,
+					post_id 	INTEGER
+				)'
 end
 
 helpers do
