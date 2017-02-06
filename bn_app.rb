@@ -120,7 +120,9 @@ post '/details/:post_id' do
 
 	post_id = params[:post_id]
 	@new_post = params[:new_post]
+	@db.execute 'insert into 
+				comments (Context, CreatedDate, post_id) 
+				values (?, datetime(),?)', [@new_post, post_id]
 	
-	erb "Вы ввели комментарий #{@new_post} для поста #{post_id}"
- 
+	redirect to ('/details/' + post_id) 
 end
