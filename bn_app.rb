@@ -93,6 +93,17 @@ post '/new' do
 				values (?, datetime())', [@new_post]
 	
 	@number = @db.execute 'select id from posts order by posts.id desc limit 1'
-	erb 'Запись добавлена!'
+	
+	redirect to '/'
   
+end
+
+get '/details/:post_id' do
+
+	post_id = params[:post_id]
+	outpost = @db.execute 'select * from posts where id =?',[post_id]
+	@row = outpost[0]
+	
+	erb :details
+	
 end
