@@ -107,3 +107,12 @@ get '/details/:post_id' do
 	erb :details
 	
 end
+
+post '/details/:post_id' do
+
+	post_id = params[:post_id]
+	@new_post = params[:new_post]
+	
+	erb "Вы ввели комментарий #{@new_post} для поста #{post_id}"
+ 
+end
