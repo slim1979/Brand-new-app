@@ -7,11 +7,21 @@ def init_db
 	@db = SQLite3::Database.new 'bn_app.db'
 	@db.results_as_hash = true
 end
+
 before do
 	init_db
 end
+
 configure do
   enable :sessions
+  init_db
+  @db.execute 'CREATE TABLE IF NOT EXISTS
+				posts 
+				(
+					id          INTEGER PRIMARY KEY AUTOINCREMENT,
+					CreatedDate DATE,
+					Context     TEXT
+				)'
 end
 
 helpers do
