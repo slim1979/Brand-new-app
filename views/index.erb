@@ -1,20 +1,13 @@
 <h2>Последние публикации</h2>
-<table class="table table-striped">
-<head>
+<hr />
 
-	<th>#</th>
-	<th>Создан</th>
-	<th>Содержимое</th>
-</head>
-<body>
-	<% @outpost.each do |row|%>
-	<tr>
-	
-			<td style="width:10%"><%= row['id']%></td>
-			<td style="width:20%"><%= row['CreatedDate']%></td>
-			<td style="width:800px"><%= row['Context']%></td>		
+	<% @outpost.each do |row|%>		
 		
-	</tr>
+		<blockquote style="border-color:blue">
+			<footer>#<%= row['id']%> Добавлен: <%= row['CreatedDate']%></footer>
+			<p ><%= row['Context']%></p>		
+		</blockquote>
+		
+		<hr />
+	
 	<%end%>
-</body>
-</table>
