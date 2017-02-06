@@ -1,0 +1,20 @@
+<h2>Последние публикации</h2>
+<table class="table table-striped">
+<head>
+
+	<th>#</th>
+	<th>Создан</th>
+	<th>Содержимое</th>
+</head>
+<body>
+	<% @outpost.each do |row|%>
+	<tr>
+	
+			<td style="width:10%"><%= row['id']%></td>
+			<td style="width:20%"><%= row['CreatedDate']%></td>
+			<td style="width:800px"><%= row['Context']%></td>		
+		
+	</tr>
+	<%end%>
+</body>
+</table>
