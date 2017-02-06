@@ -1,7 +1,15 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
+require 'sqlite3'
 
+def init_db
+	@db = SQLite3::Database.new 'bn_app.db'
+	@db.results_as_hash = true
+end
+before do
+	init_db
+end
 configure do
   enable :sessions
 end
@@ -59,5 +67,6 @@ post '/new' do
 
   @new_post = params[:new_post]
   
+  erb "Вы ввели #{@new_post}"
   
 end
