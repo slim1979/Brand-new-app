@@ -1,15 +1,14 @@
-<h3>Комментирование поста</h3>
-
-	
-		
+<h3>Комментирование публикации</h3>		
 		<blockquote style="border-color:yellow">
 		
 			<footer>#<%= @row['id']%> Добавлен: <%= @row['CreatedDate']%></footer>
 			<p ><%= @row['Context']%></p>
 			
-		</blockquote>
-		
-		
-		
+		</blockquote>		
 		<hr />
-	
+
+<h4>Комментировать</h4>
+<form action="/details/<%= @row['id']%>" name="new_comment" method="POST" role="form">
+	<textarea class="form-control" rows="6" name="new_post" placeholder="Введите текст комментария"></textarea>  <br />
+	<button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
