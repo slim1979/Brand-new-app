@@ -55,3 +55,9 @@ end
 get '/new' do
   erb :new
 end
+post '/new' do
+
+  @new_post = params[:new_post]
+  
+  
+end
