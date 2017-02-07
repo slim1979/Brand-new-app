@@ -1,4 +1,5 @@
 <h3>Комментирование публикации</h3>		
+<!--**************здесь выводится сама публикация с номером и датой создания********** -->
 		<blockquote style="border-color:yellow">
 		
 			<footer>#<%= @row['id']%> Добавлен: <%= @row['CreatedDate']%></footer>
@@ -8,7 +9,26 @@
 		<hr />
 
 <h4>Комментировать</h4>
+
+<!-- ***********форма с textarea для добавления комментария к публикации*************** -->
 <form action="/details/<%= @row['id']%>" name="new_comment" method="POST" role="form">
+	<input type="text" class="form-control" name ="user_name" placeholder="Введите Ваше имя" ><br/>
 	<textarea class="form-control" rows="3" name="new_post" placeholder="Введите текст комментария"></textarea>  <br />
 	<button type="submit" class="btn btn-primary">Сохранить</button>
 </form>
+<hr />
+
+<!-- *************здесь выводятся комментарии к публикациям с указанием даты создания комментария************** -->
+	<% @comments.each do |comment| %>
+		<p style="font-weight:bold"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <%= comment['user_name'] %> </p>
+		<p> <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> <%= comment['Context'] %> </p>
+		<p style="font-size: 75%; color: grey"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Добавлен: <%= comment['CreatedDate']%></p>
+		
+		<hr/>
+		
+	<%end %>
+	
+
+
+
+
