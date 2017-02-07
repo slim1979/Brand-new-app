@@ -20,6 +20,7 @@ configure do
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
+					Author_name TEXT,
 					Context     TEXT
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
@@ -96,18 +97,20 @@ end
 #обработчик запроса post. браузер отправляет страницу на сервер.
 post '/new' do
 
-  @new_post = params[:new_post]
+	#получаем данные из формы создания нового поста.
+	@author_name = params[:author_name]
+	@new_post = params[:new_post]
   
-	#если пост пустой, выдается ошибка 
-	if @new_post ==""
+	#если имя автора или пост пусты, выдается ошибка 
+	if @new_post =="" || @author_name==""
 		@error ='Это поле не может быть пустым'
 		return erb :new
 	end
 	
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
-				posts (Context, CreatedDate) 
-				values (?, datetime())', [@new_post]
+				posts (Author_name, Context, CreatedDate) 
+				values (?, ?, datetime())', [@author_name,@new_post]
 	
 	#@number = @db.execute 'select id from posts order by posts.id desc limit 1'
 	
@@ -132,8 +135,15 @@ get '/details/:post_id' do
 	erb :details
 	
 end
+
 #здесь добавляются комментарии к публикациям
+@seens = 0
+def seens
+	@seens +=1
+end
 post '/details/:post_id' do	
+
+		seens #считаем количество просмотров
 		
 		#форма запрашивает имя того, кто пишет комментарий
 		#и непосредственно сам комментарий
@@ -147,7 +157,7 @@ post '/details/:post_id' do
 		if @new_post =="" || @user_name==""	
 			redirect to ('/details/' + post_id) 	
 		end
-	#========конец кода обработки ошибки заполнения полей формы записи.==========
+	
 	@db.execute 'insert into 
 				comments (user_name, Context, CreatedDate, post_id) 
 				values (?, ?, datetime(),?)', [@user_name, @new_post, post_id]
