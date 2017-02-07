@@ -3,12 +3,18 @@
 
 	<% @outpost.each do |row|%>		
 		
-		<blockquote style="border-color:blue">
-			<footer>#<%= row['id']%> Добавлен: <%= row['CreatedDate']%></footer>
-			<p ><%= row['Context']%></p>		
+		<blockquote >
+			<p style="font-size: 75%">#<%= row['id']%> </p>
+			<p ><%= row['Context']%></p>	
+			<footer>Добавлен: <%= row['CreatedDate']%></footer>
 		</blockquote>
-		<a href="/details/<%= row['id']%>">Комментировать</a>
 		
+		<button class="btn btn-primary" type="button" >
+		<a href="/details/<%= row['id']%>" style="color:white">Комментировать <span class="badge"></a>
+		</button>		
 		<hr />
 	
 	<%end%>
+	
+
+
