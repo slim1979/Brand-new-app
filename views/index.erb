@@ -2,16 +2,22 @@
 <hr />
 
 	<% @outpost.each do |row|%>		
+		<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span>  <%= row['Author_name']%></p>
+			<p style="font-size: 75%; color: grey" >#<%= row['id']%>
+				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
+				Добавлено: <%= row['CreatedDate']%>
+			</p>
+		<blockquote class="blockquote">		
 		
-		<blockquote >			
-			<p style="font-weight:bold">Публикация #<%= row['id']%>  <span class="glyphicon glyphicon-user" aria-hidden="true"></span>  <%= row['Author_name']%> </p>
-			<p ><%= row['Context']%></p>	
-			<p style="font-size: 75%; color: grey" ><span class="glyphicon glyphicon-time" aria-hidden="true"></span> Добавлено: <%= row['CreatedDate']%></p>
+			<div style="max-height:100px; width: 600px; overflow:hidden;">
+				<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>				
+			</div>
+			...
 		</blockquote>
 		
-		<button class="btn btn-primary" type="button" >
-		<a href="/details/<%= row['id']%>" style="color:white">Комментировать <%= @seens %><span class="badge"></a>
-		</button>		
+		
+		<a href="/details/<%= row['id']%>">Читать полностью... <%= @seens %><span class="badge"></a>
+				
 		<hr />
 	
 	<%end%>
