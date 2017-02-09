@@ -16,7 +16,14 @@ configure do
   enable :sessions
   init_db
   @db.execute 'CREATE TABLE IF NOT EXISTS
-				posts 
+				"authors" 
+				(
+					id          		INTEGER PRIMARY KEY AUTOINCREMENT,
+					Registration_date	DATE,
+					Author_name 		TEXT					
+				)'
+  @db.execute 'CREATE TABLE IF NOT EXISTS
+				"posts" 
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
@@ -25,7 +32,7 @@ configure do
 					Context     TEXT
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
-				comments 
+				"comments" 
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
@@ -41,10 +48,10 @@ helpers do
   end
 end
 
-before '/secure/*' do
+before '/new' do
   unless session[:identity]
     session[:previous_url] = request.path
-    @error = 'Wrong login/password. Sorry, you need to be logged in to visit ' + request.path
+    @error = 'Для добавления статей нужно авторизоваться!'
     halt erb(:login_form)
   end
 end
@@ -74,7 +81,7 @@ post '/login/attempt' do
 	
 	if @login == 'admin' && @password == 'secret'
 		session[:identity] = params[:username]
-		erb :welcome
+		erb :new
 		#erb 'This is a secret place that only <%=session[:identity]%> has access to!'
 	else
 		@message = "Access denied"
@@ -99,9 +106,9 @@ end
 post '/new' do
 
 	#получаем данные из формы создания нового поста.
-	@author_name = params[:author_name]
-	@new_post = params[:new_post]
 	@new_header = params[:new_header]
+	@author_name = session[:identity]
+	@new_post = params[:new_post]	
 	
 	#если имя автора или пост пусты, выдается ошибка 
 	if @new_post =="" || @author_name=="" || @new_header ==""
