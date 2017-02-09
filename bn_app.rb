@@ -126,6 +126,10 @@ post '/registration' do
 	erb "Hello #{@author_name}"
 end
 
+get '/cabinet' do
+  erb "Hello World"
+end
+
 #обработчик запроса get. браузер получает страницу с сервера
 get '/new' do
   erb :new
