@@ -7,7 +7,9 @@
 	<span class="glyphicon glyphicon-time" aria-hidden="true"></span>  
 	Добавлено: <%= @row['CreatedDate']%>
 </p>
-<blockquote style="border-color:grey">		
+
+<blockquote style="border-color:grey">
+	<p style="font-weight:bold; font-size:18px"><%= @row['Header']%></p>		
 	<p style="font-weight:lighter; font-size:14px"><span class="glyphicon glyphicon glyphicon-hand-right" aria-hidden="true"></span>  <%= @row['Context']%></p>
 </blockquote>		
 <hr />
