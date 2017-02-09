@@ -31,9 +31,17 @@
 			    <ul class="nav navbar-nav">
 			      <li><a href="/">Все записи</a></li>
 			    </ul>
-				<ul class="nav navbar-nav">
-			      <li><a href="/new">Создать новую запись</a></li>
-			    </ul>
+				
+				<% if session[:identity] then%>  
+					 <ul class="nav navbar-nav">
+					 <li><a href="/new">Создать новую запись</a></li>
+					 </ul>
+				 <%else %>
+					 <ul class="nav navbar-nav">
+					 <li class="disabled"><a href=#>Создать новую запись</a></li>
+					 </ul>
+				 <%end%>
+				 
 				<ul class="nav navbar-nav">
 			      <li><a href="/cabinet">Кабинет</a></li>
 			    </ul>
