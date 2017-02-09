@@ -21,6 +21,7 @@ configure do
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
 					Author_name TEXT,
+					Header		TEXT,
 					Context     TEXT
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
@@ -100,17 +101,18 @@ post '/new' do
 	#получаем данные из формы создания нового поста.
 	@author_name = params[:author_name]
 	@new_post = params[:new_post]
-  
+	@new_header = params[:new_header]
+	
 	#если имя автора или пост пусты, выдается ошибка 
-	if @new_post =="" || @author_name==""
-		@error ='Это поле не может быть пустым'
+	if @new_post =="" || @author_name=="" || @new_header ==""
+		@error ='Заполните все поля формы, пожалуйста!'
 		return erb :new
 	end
 	
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
-				posts (Author_name, Context, CreatedDate) 
-				values (?, ?, datetime())', [@author_name,@new_post]
+				posts (Author_name, Header, Context, CreatedDate) 
+				values (?, ?, ?, datetime())', [@author_name,@new_header,@new_post]
 	
 	#@number = @db.execute 'select id from posts order by posts.id desc limit 1'
 	
