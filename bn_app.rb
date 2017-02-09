@@ -21,7 +21,8 @@ configure do
 					id          		INTEGER PRIMARY KEY AUTOINCREMENT,
 					Registration_date	DATE,
 					Author_name 		TEXT,
-					Login				TEXT
+					Login				TEXT,
+					Password			TEXT
 				)'
   @db.execute 'CREATE TABLE IF NOT EXISTS
 				"posts" 
@@ -53,6 +54,13 @@ before '/new' do
   unless session[:identity]
     session[:previous_url] = request.path
     @error = 'Для добавления статей нужно авторизоваться!'
+    halt erb(:login_form)
+  end
+end
+before '/cabinet' do
+  unless session[:identity]
+    session[:previous_url] = request.path
+    @error = 'Для входа в кабинет нужно авторизоваться!'
     halt erb(:login_form)
   end
 end
@@ -107,11 +115,14 @@ post '/registration' do
 	@author_login = params[:author_login]
 	@author_password = params[:author_password]
 	@author_password_confirm = params[:author_password_confirm]
-	if @author_password == @author_password_confirm
-	else
+	if @author_password != @author_password_confirm	
 		@error = 'Пароли не совпадают. Повторите ввод.'
 		return erb :registration
 	end
+	@db.execute 'insert into 
+				authors (Author_name, Login, CreatedDate) 
+				values (?, ?, datetime())', [@author_name, @author_login, @author_password]
+	
 	erb "Hello #{@author_name}"
 end
 
