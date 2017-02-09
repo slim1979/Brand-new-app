@@ -5,10 +5,10 @@
 <form action="/registration" method="POST" role="form">
 
 <label>Представьтесь, пожалуйста</label>
-	<input type="text" class="form-control" name ="author_name" placeholder="Введите Ваше имя" ><br/>
+	<input type="text" class="form-control" name ="author_name" placeholder="Введите Ваше имя" value =  <%=@author_name %>><br/>
 	
 <label>Придумайте логин для входа на сайт</label>
-	<input type="text" class="form-control" name ="author_login" placeholder="Введите Ваш логин" ><br/>
+	<input type="text" class="form-control" name ="author_login" placeholder="Введите Ваш логин"  value = <%=@author_login %>><br/>
 	
 <label>Придумайте пароль для входа на сайт</label>
 	<input type="password" class="form-control" name ="author_password" placeholder="Введите Ваш пароль" ><br/>
