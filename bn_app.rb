@@ -20,7 +20,8 @@ configure do
 				(
 					id          		INTEGER PRIMARY KEY AUTOINCREMENT,
 					Registration_date	DATE,
-					Author_name 		TEXT					
+					Author_name 		TEXT,
+					Login				TEXT
 				)'
   @db.execute 'CREATE TABLE IF NOT EXISTS
 				"posts" 
@@ -96,12 +97,32 @@ get '/logout' do
   erb "<div class='alert alert-message'>Logged out</div>"
 end
 
+get '/registration' do
+	erb :registration
+end
+
+post '/registration' do
+		
+	@author_name = params[:author_name]
+	@author_login = params[:author_login]
+	@author_password = params[:author_password]
+	@author_password_confirm = params[:author_password_confirm]
+	if @author_password == @author_password_confirm
+	else
+		@error = 'Пароли не совпадают. Повторите ввод.'
+		return erb :registration
+	end
+	erb "Hello #{@author_name}"
+end
+
 #обработчик запроса get. браузер получает страницу с сервера
 get '/new' do
   erb :new
 end
 
-#здесь добавляются и проверяются на заполнение новые посты.
+#**************СОЗДАНИЕ НОВЫХ ПОСТОВ************************
+
+#здесь добавляются и проверяются на заполнение НОВЫЕ посты.
 #обработчик запроса post. браузер отправляет страницу на сервер.
 post '/new' do
 
@@ -111,7 +132,7 @@ post '/new' do
 	@new_post = params[:new_post]	
 	
 	#если имя автора или пост пусты, выдается ошибка 
-	if @new_post =="" || @author_name=="" || @new_header ==""
+	if @new_post =="" || @new_header ==""
 		@error ='Заполните все поля формы, пожалуйста!'
 		return erb :new
 	end
@@ -119,14 +140,14 @@ post '/new' do
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
 				posts (Author_name, Header, Context, CreatedDate) 
-				values (?, ?, ?, datetime())', [@author_name,@new_header,@new_post]
-	
-	#@number = @db.execute 'select id from posts order by posts.id desc limit 1'
-	
+				values (?, ?, ?, datetime())', [@author_name, @new_header, @new_post]
+				
 	#после добавления поста в базу данных происходит перенаправление на главную страницу
 	redirect to '/'
   
 end
+#=================================================================
+
 
 #здесь создается страничка для каждого поста с его номером в url
 get '/details/:post_id' do
@@ -147,9 +168,7 @@ end
 
 #здесь добавляются комментарии к публикациям
 
-post '/details/:post_id' do	
-
-		
+post '/details/:post_id' do			
 		
 		#форма запрашивает имя того, кто пишет комментарий
 		#и непосредственно сам комментарий
