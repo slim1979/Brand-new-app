@@ -84,20 +84,25 @@ get '/login/form' do
 end
 
 post '/login/attempt' do
-
+	init_db
+	
 	@login = params[:username]
 	@password = params[:user_password]
 	
-	if @login == 'admin' && @password == 'secret'
-		session[:identity] = params[:username]
-		erb :new
-		#erb 'This is a secret place that only <%=session[:identity]%> has access to!'
-	else
-		@message = "Access denied"
-		where_user_came_from = session[:previous_url] || '/'
-		redirect to where_user_came_from
-	end   
+	@validation = @db.execute 'select * from authors'
+	@validation.each do |validation|
+	
+		if @login == validation['Login'] && @password == validation['Password']
+			session[:identity] = validation['Author_name']
+			erb "Hello, #{validation['Author_name']}"
+		end
+		
+	end
    
+			@message = "Access denied"
+			where_user_came_from = session[:previous_url] || '/'
+			redirect to where_user_came_from
+		  
 end
 
 get '/logout' do
@@ -120,8 +125,8 @@ post '/registration' do
 		return erb :registration
 	end
 	@db.execute 'insert into 
-				authors (Author_name, Login, CreatedDate) 
-				values (?, ?, datetime())', [@author_name, @author_login, @author_password]
+				authors (Author_name, Login, Password, Registration_date) 
+				values (?, ?, ?, datetime())', [@author_name, @author_login, @author_password]
 	
 	erb "Hello #{@author_name}"
 end
