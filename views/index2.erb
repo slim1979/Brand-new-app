@@ -1,0 +1,26 @@
+
+<h2>Последние публикации</h2>
+<hr />
+
+	<% @outpost.each do |row|%>		
+	
+		<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span>  <%= row['Author_name']%></p>
+			<p style="font-size: 75%; color: grey" >
+				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
+				Добавлено: <%= row['CreatedDate']%>
+			</p>
+		<blockquote class="blockquote">		
+			<ins><p style="font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
+			<p></p>
+			<div style="max-height:100px; width: 600px; overflow:hidden;">							
+				<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
+			</div>
+			...
+			
+		</blockquote>		
+		<a href="/details/<%= row['id']%>">Читать полностью... </a>
+				
+		<hr />
+	
+	<%end%>	
+
