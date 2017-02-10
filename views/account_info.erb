@@ -1,0 +1,35 @@
+﻿
+
+<p> Автор <%= @row_Author_for_info['Author_name'] %> </p>
+<% @get_current_author_posts.each do |row| %>
+	<!-- <div> -->
+		<!-- <p><%= row['Header'] %></p> -->
+		<!-- <p><%= row['Context'] %></p> -->
+	<!-- </div> -->
+	<!-- <hr /> -->
+
+
+
+			<p style="font-size: 75%; color: grey" >
+				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
+				Добавлено: <%= row['CreatedDate']%>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>				
+				<% @comments_amount = @db.execute 'select * from comments where post_id = ? order by id', row['id']%>
+				<%= @comments_amount.length %>
+			</p>
+		<blockquote class="blockquote">		
+			<ins><p style="max-height:100px; width: 600px; font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
+			<p></p>
+			<div style="max-height:100px; width: 600px; overflow:hidden;">							
+				<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
+			</div>
+			...
+			
+		</blockquote>		
+		
+		<a href="/details/<%= row['id']%> ">Читать полностью... </a>
+				
+		<hr />
+
+<%end%>
