@@ -4,7 +4,7 @@
 
 	<% @outpost.each do |row|%>		
 	
-		<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span>  <%= row['Author_name']%></p>
+		<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <a href="/account_info/<%= row['Author_id']%>"><%= row['Author_name']%></a></p>
 			<p style="font-size: 75%; color: grey" >
 				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
 				Добавлено: <%= row['CreatedDate']%>
@@ -23,7 +23,7 @@
 			
 		</blockquote>		
 		
-		<a href=" /details/<%= row['id']%> ">Читать полностью... </a>
+		<a href="/details/<%= row['id']%> ">Читать полностью... </a>
 				
 		<hr />
 	
