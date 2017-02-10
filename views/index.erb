@@ -8,6 +8,10 @@
 			<p style="font-size: 75%; color: grey" >
 				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
 				Добавлено: <%= row['CreatedDate']%>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>				
+				<% @comments_amount = @db.execute 'select * from comments where post_id = ? order by id', row['id']%>
+				<%= @comments_amount.length %>
 			</p>
 		<blockquote class="blockquote">		
 			<ins><p style="max-height:100px; width: 600px; font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
@@ -18,7 +22,8 @@
 			...
 			
 		</blockquote>		
-		<a href="/details/<%= row['id']%>">Читать полностью... </a>
+		
+		<a href=" /details/<%= row['id']%> ">Читать полностью... </a>
 				
 		<hr />
 	
