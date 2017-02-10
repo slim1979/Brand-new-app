@@ -17,7 +17,7 @@ configure do
   enable :sessions
   init_db
   @db.execute 'CREATE TABLE IF NOT EXISTS
-				"authors" 
+				authors
 				(
 					id          		INTEGER PRIMARY KEY AUTOINCREMENT,
 					Registration_date	DATE,
@@ -26,17 +26,18 @@ configure do
 					Password			TEXT
 				)'
   @db.execute 'CREATE TABLE IF NOT EXISTS
-				"posts" 
+				posts 
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
 					Author_name TEXT,
 					Header		TEXT,
 					Context     TEXT,
-					Views       INTEGER
+					Views       INTEGER,
+					Author_id   INTEGER
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
-				"comments" 
+				comments
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
 					CreatedDate DATE,
@@ -52,21 +53,13 @@ helpers do
   end
 end
 
-before '/new' do
-  unless session[:identity]
-    session[:previous_url] = request.path
-    @error = 'Для добавления статей нужно авторизоваться!'
-    halt erb(:login_form)
-  end
-end
-
-before '/cabinet' do
-  unless session[:identity]
-    session[:previous_url] = request.path
-    @error = 'Для входа '
-    halt erb(:login_form)
-  end
-end
+# before '/new' do
+  # unless session[:identity]
+    # session[:previous_url] = request.path
+    # @error = 'Для добавления статей нужно авторизоваться!'
+    # halt erb(:login_form)
+  # end
+# end
 
 get '/' do
 	
@@ -174,8 +167,8 @@ post '/new' do
 	
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
-				posts (Author_name, Header, Context, CreatedDate) 
-				values (?, ?, ?, datetime())', [@author_name, @new_header, @new_post]
+				posts (Author_name, Header, Context, CreatedDate, Author_id) 
+				values (?, ?, ?, datetime(), ?)', [@author_name, @new_header, @new_post]
 				
 	#после добавления поста в базу данных происходит перенаправление на главную страницу
 	redirect to '/'
@@ -185,7 +178,7 @@ end
 
 
 #здесь создается страничка для каждого поста с его номером в url
-get '/details/:post_id' do
+get '/details/:post_id' do		
 	
 	post_id = params[:post_id]
 	outpost = @db.execute 'select * from posts where id =?',[post_id]
