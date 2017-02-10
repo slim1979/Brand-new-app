@@ -46,7 +46,7 @@ end
 
 helpers do
   def username
-    session[:identity] ? session[:identity] : 'Hello stranger'
+    session[:identity] ? 'Вы вошли, как ' + session[:identity] : 'Hello stranger'
   end
 end
 
@@ -57,10 +57,11 @@ before '/new' do
     halt erb(:login_form)
   end
 end
+
 before '/cabinet' do
   unless session[:identity]
     session[:previous_url] = request.path
-    @error = 'Для входа в кабинет нужно авторизоваться!'
+    @error = 'Для входа '
     halt erb(:login_form)
   end
 end
@@ -74,13 +75,16 @@ get '/' do
   
   @out_comments = @db.execute 'select id from comments order by post_id'
   
-  erb :index
+  erb :index3
 end
 
 get '/login/form' do
 
 		erb :login_form
   
+end
+get '/login/attempt' do
+  redirect to '/'
 end
 
 post '/login/attempt' do
@@ -90,11 +94,11 @@ post '/login/attempt' do
 	@password = params[:user_password]
 	
 	@validation = @db.execute 'select * from authors'
-	@validation.each do |validation|
+	@validation.each do |validation|		
 	
 		if @login == validation['Login'] && @password == validation['Password']
 			session[:identity] = validation['Author_name']
-			erb "Hello, #{validation['Author_name']}"
+			erb :cabinet
 		end
 		
 	end
@@ -120,6 +124,15 @@ post '/registration' do
 	@author_login = params[:author_login]
 	@author_password = params[:author_password]
 	@author_password_confirm = params[:author_password_confirm]
+	
+	@uniq_login = @db.execute 'select * from authors'
+	
+	@uniq_login.each do |uniq_login|	
+		if @author_login == uniq_login['Login'] 
+			@error = 'Такой логин уже существует, выберите другой'
+			return erb :registration
+		end		
+	end
 	if @author_password != @author_password_confirm	
 		@error = 'Пароли не совпадают. Повторите ввод.'
 		return erb :registration
@@ -128,11 +141,11 @@ post '/registration' do
 				authors (Author_name, Login, Password, Registration_date) 
 				values (?, ?, ?, datetime())', [@author_name, @author_login, @author_password]
 	
-	erb "Hello #{@author_name}"
+	erb "Регистрация завершена. #{@author_name}, теперь Вы можете войти на сайт"
 end
 
 get '/cabinet' do
-  erb "Hello World"
+  erb :cabinet
 end
 
 #обработчик запроса get. браузер получает страницу с сервера
