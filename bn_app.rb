@@ -9,6 +9,7 @@ def init_db
 end
 
 before do
+	
 	init_db
 end
 
@@ -31,7 +32,8 @@ configure do
 					CreatedDate DATE,
 					Author_name TEXT,
 					Header		TEXT,
-					Context     TEXT
+					Context     TEXT,
+					Views       INTEGER
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
 				"comments" 
@@ -75,7 +77,7 @@ get '/' do
   
   @out_comments = @db.execute 'select id from comments order by post_id'
   
-  erb :index3
+  erb :index
 end
 
 get '/login/form' do
@@ -141,7 +143,7 @@ post '/registration' do
 				authors (Author_name, Login, Password, Registration_date) 
 				values (?, ?, ?, datetime())', [@author_name, @author_login, @author_password]
 	
-	erb "Регистрация завершена. #{@author_name}, теперь Вы можете войти на сайт"
+	erb "Регистрация завершена, #{@author_name}. Теперь Вы можете войти на сайт"
 end
 
 get '/cabinet' do
