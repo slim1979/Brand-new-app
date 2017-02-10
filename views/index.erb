@@ -1,3 +1,4 @@
+
 <h2>Последние публикации</h2>
 <hr />
 
@@ -9,7 +10,7 @@
 				Добавлено: <%= row['CreatedDate']%>
 			</p>
 		<blockquote class="blockquote">		
-			<ins><p style="font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
+			<ins><p style="max-height:100px; width: 600px; font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
 			<p></p>
 			<div style="max-height:100px; width: 600px; overflow:hidden;">							
 				<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
@@ -21,7 +22,5 @@
 				
 		<hr />
 	
-	<%end%>
-	
-
+	<%end%>	
 
