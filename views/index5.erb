@@ -1,0 +1,68 @@
+<h2>Последние публикации</h2>
+
+
+	<% @outpost.each do |row|%>	
+		<div style="height: 600px">
+			<hr />
+<!-- ***************** здесь выводится значок USER и имя автора статьи ******************-->
+				<div style="position:relative; z-index:2">
+					<p>
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span> 
+						<a href="/account_info/<%= row['Author_id']%>">
+							<%= row['Author_name']%>
+						</a>
+					</p>
+					<p style="font-size: 75%; color: grey" >
+						<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
+							Добавлено: <%= row['CreatedDate']%>
+							&nbsp;&nbsp;&nbsp;&nbsp;				
+						<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>	
+						
+<!-- ************ получаем из базы данных количество комментариев *********************-->
+								<% @comments_amount = @db.execute 'select * from comments where post_id = ? order by id', row['id']%>
+								<%= @comments_amount.length %>
+				
+					</p>
+
+				</div>
+				
+<!-- ***************здесь выводится и форматируется ИЗОБРАЖЕНИЕ **************-->				
+				<div style="position:relative; z-index:3; overflow:hidden">
+					<a href =# >
+						<img src="<%= row['Img'] %>" style="position:relative; top:-40px; left: 10px; width:600px; margin-bottom:20px">
+					</a>
+				</div>	
+				<br />
+
+				
+<!-- **********здесь выводится ЗАГОЛОВОК, ПОДЗАГОЛОВОК и ТЕКСТ публикации ******************-->
+				<div style="position:relative; background-color: white; padding-top:10px; width: 650px; top: -200px; z-index:4">
+				
+					<h4 >			
+						<p style="font-weight:bold">
+							<ins>
+								<%= row['Header']%>
+							</ins>
+							<blockquote>
+								<p style="color: grey; font-weight: lighter; font-family: arial narrow">
+									<%= row['SubHeader'].length < 1 ? "" : row['SubHeader'] %>
+								</p>
+							</blockquote>
+						</p>
+					</h4>		
+						
+					<div style="max-height:100px; overflow:hidden; ">							
+						<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
+					</div>
+					...	
+					<p />
+					<a href="/details/<%= row['id']%>">
+						Читать полностью
+					</a>
+					
+				</div>		
+				
+			<br />
+	</div>
+	<%end%>	
+

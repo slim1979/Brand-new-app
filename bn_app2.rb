@@ -33,6 +33,7 @@ configure do
 					Header		TEXT NOT NULL,
 					SubHeader	TEXT NOT NULL,
 					Context     TEXT NOT NULL,
+					Img			TEXT,
 					Views       INTEGER,
 					Author_id   INTEGER NOT NULL
 				)'
@@ -68,7 +69,7 @@ get '/' do
 	#на экран в обратном порядке, т.е. самые свежие посты будут наверху списка
 	@outpost = @db.execute 'select * from posts order by id desc'
   
-  erb :index
+  erb :index5
 end
 
 get '/login/form' do
@@ -178,13 +179,15 @@ end
 #обработчик запроса post. браузер отправляет страницу на сервер.
 post '/new' do
 
+	#инициализируем БД, чтобы иметь доступ к данным и возможность записи в БД
 	init_db
-	#получаем данные из формы создания нового поста.
-	@new_header = params[:new_header]
-	@new_subheader = params[:new_subheader]
-	@author_name = session[:identity]
-	@new_post = params[:new_post]	
 	
+	#получаем данные из формы создания нового поста.
+	@author_name = session[:identity]
+	@new_header = params[:new_header]
+	@new_img = params[:new_img]
+	@new_subheader = params[:new_subheader]	
+	@new_post = params[:new_post]		
 	
 	#если имя автора или пост пусты, выдается ошибка 
 	if @new_post =="" || @new_header ==""
@@ -194,8 +197,8 @@ post '/new' do
 				
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
-				posts (Author_name, Header, SubHeader, Context, CreatedDate, Author_id) 
-				values (?, ?, ?, ?, datetime(), ?)', [@author_name, @new_header, @new_subheader, @new_post, session['id']]
+				posts (Author_name, Header, SubHeader, Context, Img, CreatedDate, Author_id) 
+				values (?, ?, ?, ?, ?, datetime(), ?)', [@author_name, @new_header, @new_subheader, @new_post, @new_img, session['id']]
 			
 	#после добавления поста в базу данных происходит перенаправление на главную страницу
 	redirect to '/'
