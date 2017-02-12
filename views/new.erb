@@ -1,16 +1,15 @@
 <h2>Добавить новый пост</h2>
 <p>
-	Здесь Вы можете добавить новый пост
-</p>
-<p style="color:red">
-	Все поля обязательны для заполнения
+	Здесь Вы можете создать новую статью, публикацию, пост
 </p>
 <form action="/new" method="POST" role="form">	
 	
-	<label>Введите заголовок для Вашей публикации</label>
-	<input type="text" class="form-control" name ="new_header" placeholder="Введите заголовок" ><br/>
-	<label>Введите текст публикации</label>
-	<div><textarea class="form-control" rows="6" name="new_post" placeholder="Введите текст"></textarea></div>  <br />
+	<!-- <label><label style="color:red">*</label>Введите заголовок для Вашей публикации</label> -->
+	<input type="text" class="form-control" name ="new_header" placeholder="Сюда введите заголовок Вашей статьи. Обязательное поле"><br />
+	<!-- <label>Введите подзаголовок для Вашей публикации (необязательное поле)</label> -->
+	<input type="text" class="form-control" name ="new_subheader" placeholder="Сюда введите подзаголовок Вашей статьи, если он есть. Необязательное поле" >	<br />
+	<!-- <label>Введите текст публикации</label> -->
+	<div><textarea class="form-control" rows="6" name="new_post" placeholder="Сюда введите текст публикации. Обязательное поле"></textarea></div>  <br />
 	<button type="submit" class="btn btn-primary">Отправить</button>
 	
 </form>
