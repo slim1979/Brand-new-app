@@ -15,34 +15,35 @@ end
 configure do
   enable :sessions
   init_db
-  @db.execute 'CREATE TABLE IF NOT EXISTS
+	@db.execute 'CREATE TABLE IF NOT EXISTS
 				authors
 				(
 					id          		INTEGER PRIMARY KEY AUTOINCREMENT,
-					Registration_date	DATE,
-					Author_name 		TEXT,
-					Login				TEXT,
-					Password			TEXT
+					Registration_date	DATE NOT NULL,
+					Author_name 		TEXT NOT NULL,
+					Login				TEXT NOT NULL,
+					Password			TEXT NOT NULL
 				)'
-  @db.execute 'CREATE TABLE IF NOT EXISTS
+	@db.execute 'CREATE TABLE IF NOT EXISTS
 				posts 
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
-					CreatedDate DATE,
-					Author_name TEXT,
-					Header		TEXT,
-					Context     TEXT,
+					CreatedDate DATE NOT NULL,
+					Author_name TEXT NOT NULL,
+					Header		TEXT NOT NULL,
+					SubHeader	TEXT NOT NULL,
+					Context     TEXT NOT NULL,
 					Views       INTEGER,
-					Author_id   INTEGER
+					Author_id   INTEGER NOT NULL
 				)'
 	@db.execute 'CREATE TABLE IF NOT EXISTS
 				comments
 				(
 					id          INTEGER PRIMARY KEY AUTOINCREMENT,
-					CreatedDate DATE,
-					user_name   TEXT,
-					Context     TEXT,
-					post_id 	INTEGER
+					CreatedDate DATE NOT NULL,
+					user_name   TEXT NOT NULL,
+					Context     TEXT NOT NULL,
+					post_id 	INTEGER NOT NULL
 				)'
 end
 
@@ -62,10 +63,10 @@ end
 
 get '/' do
 	
-  init_db
-  #добавляем в переменную все посты с аргументом desc для вывода их
-  #на экран в обратном порядке, т.е. самые свежие посты будут наверху списка
-  @outpost = @db.execute 'select * from posts order by id desc'
+	init_db
+	#добавляем в переменную все посты с аргументом desc для вывода их
+	#на экран в обратном порядке, т.е. самые свежие посты будут наверху списка
+	@outpost = @db.execute 'select * from posts order by id desc'
   
   erb :index
 end
@@ -180,6 +181,7 @@ post '/new' do
 	init_db
 	#получаем данные из формы создания нового поста.
 	@new_header = params[:new_header]
+	@new_subheader = params[:new_subheader]
 	@author_name = session[:identity]
 	@new_post = params[:new_post]	
 	
@@ -192,8 +194,8 @@ post '/new' do
 				
 	#если нет, пост добавляется в базу данных.
 	@db.execute 'insert into 
-				posts (Author_name, Header, Context, CreatedDate, Author_id) 
-				values (?, ?, ?, datetime(), ?)', [@author_name, @new_header, @new_post, session['id']]
+				posts (Author_name, Header, SubHeader, Context, CreatedDate, Author_id) 
+				values (?, ?, ?, ?, datetime(), ?)', [@author_name, @new_header, @new_subheader, @new_post, session['id']]
 			
 	#после добавления поста в базу данных происходит перенаправление на главную страницу
 	redirect to '/'
