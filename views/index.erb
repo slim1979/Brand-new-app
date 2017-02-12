@@ -1,31 +1,51 @@
 
 <h2>Последние публикации</h2>
 <hr />
-
-	<% @outpost.each do |row|%>		
-	
-		<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <a href="/account_info/<%= row['Author_id']%>"><%= row['Author_name']%></a></p>
+<div style="width:700px">
+	<% @outpost.each do |row|%>	 
+		<!-- ***************** здесь выводится значок USER и имя автора статьи ******************-->
+		
+			<p><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <a href="/account_info/<%= row['Author_id']%>"><%= row['Author_name']%></a></p>
 			<p style="font-size: 75%; color: grey" >
 				<span class="glyphicon glyphicon-time" aria-hidden="true"></span> 
 				Добавлено: <%= row['CreatedDate']%>
-				&nbsp;&nbsp;&nbsp;&nbsp;
-				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>				
+				&nbsp;&nbsp;&nbsp;&nbsp;				
+				<span class="glyphicon glyphicon-comment" aria-hidden="true"></span>	
+				
+				<!-- ************ получаем из базы данных количество комментариев *********************-->
 				<% @comments_amount = @db.execute 'select * from comments where post_id = ? order by id', row['id']%>
 				<%= @comments_amount.length %>
+				<!-- ================================================================================= -->
+				
 			</p>
-		<blockquote class="blockquote">		
-			<ins><p style="max-height:100px; width: 600px; font-weight:bold; font-size:18px"><%= row['Header']%></p></ins>
-			<p></p>
-			<div style="max-height:100px; width: 600px; overflow:hidden;">							
-				<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
+		<!-- ================================================================================	 -->
+		<div style="position:absolute;">
+			<a href =# >
+				<img src="http://agenda-u.org/sites/default/files/field/image/13_21_1.jpg" style="width:700px; padding:5px; border:2px solid white">
+			</a>
+		</div>
+
+		<!-- <blockquote class="blockquote">	 -->
+		<div style="position:relative; padding-top:200px; ">
+			<div style="background-color:white">
+				<h3>			
+					<p style="max-height:100px; width: 700px; font-weight:bold">
+						<ins><%= row['Header']%></ins>
+						<p style="font-size: 65%; color: grey"><%= row['SubHeader']%></p>
+					</p>
+				</h3>		
+					
+					<div style="max-height:100px; width: 700px; overflow:hidden;">							
+						<p style="font-weight:lighter; font-size:14px"><%= row['Context']%></p>			
+					</div>
+					...	
 			</div>
-			...
-			
-		</blockquote>		
+		</div>	
+		<!-- </blockquote>		 -->
 		
 		<a href="/details/<%= row['id']%> ">Читать полностью... </a>
-				
-		<hr />
-	
+		
+	<hr />
+</div>
 	<%end%>	
 
