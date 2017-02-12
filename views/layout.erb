@@ -25,16 +25,16 @@
 			      <span class="icon-bar"></span>
 			      <span class="icon-bar"></span>
 			    </button>
-			    <a class="navbar-brand" href="/">Мой первый блог</a>
+			    <a class="navbar-brand">Мой первый блог</a>
 			  </div>
 			  <div class="navbar-collapse collapse">
 			    <ul class="nav navbar-nav">
-			      <li><a href="/">Все записи</a></li>
+			      <li><a href="/">Все публикации</a></li>
 			    </ul>
 				
 				<% if session[:identity] then%>  
 					 <ul class="nav navbar-nav">
-					 <li><a href="/new">Создать новую запись</a></li>
+					 <li><a href="/new">Добавить новый пост</a></li>
 					 </ul>
 				 <%else %>
 					 <ul class="nav navbar-nav">
